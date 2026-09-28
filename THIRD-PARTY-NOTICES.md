@@ -23,3 +23,6 @@ Application dependencies are listed below. Redistributed package license/notice 
 | SQLitePCLRaw.provider.e_sqlite3/3.0.5 | Apache-2.0 | https://www.nuget.org/packages/SQLitePCLRaw.provider.e_sqlite3/3.0.5 |
 | SixLabors.Fonts/1.0.0 | Apache-2.0 | https://github.com/SixLabors/Fonts |
 | ZXing.Net/0.16.11 | Apache-2.0 | https://github.com/micjahn/ZXing.Net/ |
+
+
+The optional Windows Internet connection helper is cloudflared 2026.9.3 (Apache License 2.0), downloaded from the official Cloudflare GitHub release and verified against its published SHA-256 digest. Its license is bundled in Assets/Licenses/cloudflared-LICENSE. Assets/Tools/cloudflared.json records the version, official URL and digest. The executable is excluded from source control. Cloudflare Quick Tunnel is an optional temporary pilot service: https://developers.cloudflare.com/cloudflare-one/networks/connectors/cloudflare-tunnel/do-more-with-tunnels/trycloudflare/ .
