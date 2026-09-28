@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="referrer" content="no-referrer"><title>DJCIS Scanner</title>
+  <style>
+    *{box-sizing:border-box}body{margin:0;background:#f4f4f4;color:#161616;font:16px/1.55 system-ui,sans-serif}header{background:#161616;color:white;padding:24px}main{max-width:580px;margin:32px auto;padding:32px;background:white}h1{font-size:32px;font-weight:500;line-height:1.2}a{display:block;background:#0f62fe;color:white;text-decoration:none;padding:16px;margin:16px 0}a[hidden]{display:none}.muted{color:#525252;font-size:14px}code{overflow-wrap:anywhere}#status{border-left:3px solid #006b3c;padding-left:16px}
+  </style>
+</head>
+<body>
+<header>DJCIS · SCHOOL ID 501357</header>
+<main>
+  <h1>Your school scanner</h1><p>Download the Android app, install it, then return to this page to save your device invitation.</p>
+  <p id="status">Loading download information…</p>
+  <a id="download" hidden>1. Download Android app</a><a id="enroll" hidden>2. Open scanner after installing</a>
+  <p>In the app, export the enrollment file and give it to the school administrator. Approval and an encrypted roster are required before scanning.</p>
+  <p class="muted" id="invitation"></p><p class="muted">The app includes no learner roster. Routine verification works offline after enrollment and roster import.</p>
+</main>
+<script>
+(async()=>{
+  const invitation=new URLSearchParams(location.search).get('inv')||'';
+  const status=document.getElementById('status');
+  if(!/^[A-Za-z0-9_-]{16,80}$/.test(invitation)){status.textContent='Ask the school administrator for your device download QR.';return;}
+  document.getElementById('invitation').textContent='Your invitation code: '+invitation;
+  const enroll=document.getElementById('enroll');enroll.href='djcis://enroll?inv='+encodeURIComponent(invitation);enroll.hidden=false;
+  try{
+    const config=await(await fetch('config.json',{cache:'no-store'})).json();
+    if(!config.apkUrl || !config.apkUrl.startsWith('https://')){status.textContent='The public APK download has not been published yet. Use the Windows school Wi-Fi download service.';return;}
+    const link=document.getElementById('download');link.href=config.apkUrl;link.hidden=false;
+    status.textContent='Scanner version '+config.version+'. After installation, tap Open scanner above.';
+  }catch{status.textContent='Download information is unavailable. Contact the school administrator.';}
+})();
+</script>
+</body>
+</html>
