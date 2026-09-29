@@ -1,5 +1,7 @@
 # ID Agent downloads
 
-Download page: https://gragaza-creator.github.io/ID-Agent-downloads/
+Official Android and Windows scanner installers: https://gragaza-creator.github.io/ID-Agent-downloads/
 
-Signed Android APKs are published as GitHub Release assets. This repository contains only the download page, Black Spy app mark and installer notices. It contains no learner roster, LRN, birth dates, school signing key, or private application source. Each school configures its own identity in the Windows app. An approved device and its encrypted roster are required before scanning. Source development stays in the private ID-Agent repository.
+The page detects the operating system and offers a manual alternative. The Windows EXE selects native x64 or ARM64 itself and embeds its runtime. Both scanners can check app updates from Support tools. Install over the existing app to retain pairing.
+
+This repository contains only the download page, original app mark, metadata, installer assets and notices. Learner records, LRN, birth dates, device/school keys and application source are excluded. Source stays in the private ID-Agent repository. Physical DCP camera and ARM64 hardware testing remains pending.

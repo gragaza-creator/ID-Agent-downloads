@@ -1,68 +1,69 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="referrer" content="no-referrer"><title>ID Agent BY GAZA</title><link rel="icon" type="image/svg+xml" href="favicon.svg?v=0.2.6">
-  <style>
-    *{box-sizing:border-box}body{margin:0;background:#f4f4f4;color:#161616;font:16px/1.55 system-ui,sans-serif}header{background:#161616;color:white;padding:24px}main{max-width:580px;margin:32px auto;padding:32px;background:white}h1{font-size:32px;font-weight:500;line-height:1.2}a{display:block;background:#0f62fe;color:white;text-decoration:none;padding:16px;margin:16px 0}a[hidden],[hidden]{display:none}.secondary{background:#393939}.muted{color:#525252;font-size:14px}#status{border-left:3px solid #0f62fe;padding-left:16px}a:focus-visible{outline:3px solid #161616;outline-offset:3px}@media(max-width:620px){main{margin:16px;padding:24px}header{padding:24px}}
-  </style>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="referrer" content="no-referrer"><title>ID Agent</title><link rel="icon" type="image/svg+xml" href="favicon.svg?v=0.2.7">
+<style>
+*{box-sizing:border-box}body{margin:0;background:#f4f4f4;color:#161616;font:16px/1.55 system-ui,sans-serif}header{background:#161616;color:white;padding:24px}main{max-width:580px;margin:32px auto;padding:32px;background:white}h1{font-size:32px;font-weight:500;line-height:1.2}a{display:block;background:#0f62fe;color:white;text-decoration:none;padding:16px;margin:16px 0}a[hidden],[hidden]{display:none}.secondary{background:#393939}.muted{color:#525252;font-size:14px}#status{border-left:3px solid #0f62fe;padding-left:16px}a:focus-visible{outline:3px solid #161616;outline-offset:3px}summary{cursor:pointer}@media(max-width:620px){main{margin:16px;padding:24px}header{padding:24px}}
+</style>
 </head>
 <body>
-<header><img src="favicon.svg?v=0.2.6" width="32" height="32" alt="" style="vertical-align:middle;margin-right:12px">ID Agent <span style="display:inline-block;font-size:8px;font-weight:300;transform:translateY(3px)">BY GAZA</span><div style="font-size:12px;color:#a8a8a8;margin-top:8px">Build 20260929.4 · v0.2.6</div></header>
+<header><img src="favicon.svg?v=0.2.7" width="32" height="32" alt="" style="vertical-align:middle;margin-right:12px">ID Agent <span style="display:inline-block;font-size:8px;font-weight:300;transform:translateY(3px)">BY GAZA</span><div style="font-size:12px;color:#a8a8a8;margin-top:8px">Build 20260929.6 · v0.2.7</div></header>
 <main>
-  <h1 id="heading">Install ID Agent</h1>
-  <p id="instructions">Download and install the Android app, then open it and scan the current pairing QR in Windows. Approval and roster setup finish automatically.</p>
-  <a id="download" hidden>Download Android APK</a>
-  <a id="enroll" hidden>Open ID Agent and connect</a>
-  <p id="status" role="status">Loading download information…</p>
-  <p class="muted" id="download-status"></p>
-  <p class="muted">Keep Windows open during setup. The APK contains no learner records. Once connected, the scanner receives updates automatically and verifies school cards offline.</p>
+<h1 id="heading">Install ID Agent</h1>
+<p id="instructions">Install the scanner package for this device, then open it and scan the current pairing QR in the Windows administrator app. Approval and roster setup finish automatically.</p>
+<a id="download" hidden>Download scanner</a>
+<a id="enroll" hidden>Open ID Agent and connect</a>
+<p id="status" role="status">Loading download information…</p>
+<p class="muted" id="download-status"></p>
+<details><summary>Download for another device</summary><a id="other-download" class="secondary" hidden></a></details>
+<p class="muted">Android 8 or later. Windows 10 version 2004 or later, with an x64 or ARM64 processor. The Windows installer selects the matching package automatically and includes its runtime.</p>
+<p class="muted">Keep the administrator app open during setup. Installers contain no learner records. After pairing, cached school IDs can be verified offline. To update an installed scanner, use Support tools → Check app update and install over the existing app to retain pairing.</p>
 </main>
 <script>
 window.addEventListener('hashchange',()=>location.reload());
 (async()=>{
-  const params=new URLSearchParams(location.search);
-  const fragment=new URLSearchParams(location.hash.slice(1));
-  const pairing=fragment.get('pair')||params.get('pair')||'';
-  let invitation=params.get('inv')||'';
-  const status=document.getElementById('status');
-  const downloadStatus=document.getElementById('download-status');
-  const download=document.getElementById('download');
-  const enroll=document.getElementById('enroll');
-  let ticket=null;
-  if(pairing){
-    try{
-      if(!/^djcis:\/\/pair\?d=[A-Za-z0-9_-]{50,3000}$/.test(pairing))throw new Error();
-      const encoded=new URL(pairing).searchParams.get('d').replace(/-/g,'+').replace(/_/g,'/');
-      const bytes=Uint8Array.from(atob(encoded+'='.repeat((4-encoded.length%4)%4)),c=>c.charCodeAt(0));
-      ticket=JSON.parse(new TextDecoder('utf-8',{fatal:true}).decode(bytes));
-      if(ticket.version!==1 || !/^[A-Za-z0-9_-]{16,80}$/.test(ticket.invitationId) || !/^[A-Za-z0-9_-]{43}$/.test(ticket.token) || !/^[a-fA-F0-9]{64}$/.test(ticket.schoolFingerprint) || !Number.isFinite(Date.parse(ticket.expires)))throw new Error();
-      invitation=ticket.invitationId;
-      document.getElementById('heading').textContent='Connect your scanner';
-      document.getElementById('instructions').textContent='Fresh installation? Download and install the APK, then return here and tap Open ID Agent and connect. If already installed, connect now.';
-      download.className='secondary';enroll.href=pairing;
-      const checkExpiry=()=>{
-        const expired=Date.parse(ticket.expires)<=Date.now();enroll.hidden=expired;
-        status.textContent=expired?'This pairing QR expired. After installing, scan a new QR from Windows.':'After installation, tap Open ID Agent and connect. Keep the Windows pairing QR open until setup finishes.';
-        return expired;
-      };
-      if(!checkExpiry()){const timer=setInterval(()=>{if(checkExpiry())clearInterval(timer);},1000);}
-    }catch{ticket=null;status.textContent='This pairing link is invalid. Install the app, then scan a new pairing QR from Windows.';}
-  }else{
-    status.textContent='After installation, open ID Agent and scan the pairing QR shown in Windows.';
-    if(/^[A-Za-z0-9_-]{16,80}$/.test(invitation)){enroll.href='djcis://enroll?inv='+encodeURIComponent(invitation);enroll.textContent='Open ID Agent';enroll.hidden=false;}
-  }
-  try{
-    const suffix=/^[A-Za-z0-9_-]{16,80}$/.test(invitation)?'?inv='+encodeURIComponent(invitation):'';
-    const response=await fetch('config.json'+suffix,{cache:'no-store',referrerPolicy:'no-referrer'});
-    if(!response.ok)throw new Error();
-    const config=await response.json();
-    const url=new URL(config.apkUrl,location.href);
-    const localDownload=location.protocol==='http:' && url.origin===location.origin && url.pathname==='/app.apk';
-    if(!config.apkUrl || url.username || url.password || !(url.protocol==='https:' || localDownload))throw new Error();
-    download.href=url.href;download.hidden=false;
-    downloadStatus.textContent='Android 8 or later · version '+config.version;
-  }catch{downloadStatus.textContent='Download unavailable. Ask the administrator to show the school Wi-Fi download QR, or try this page again.';}
+const params=new URLSearchParams(location.search),fragment=new URLSearchParams(location.hash.slice(1));
+const pairing=fragment.get('pair')||params.get('pair')||'';
+let invitation=params.get('inv')||'';
+const status=document.getElementById('status'),downloadStatus=document.getElementById('download-status'),download=document.getElementById('download'),other=document.getElementById('other-download'),enroll=document.getElementById('enroll');
+const nav=typeof navigator==='undefined'?{}:navigator;
+const platform=nav.userAgentData?.platform||nav.platform||'',agent=nav.userAgent||'';
+const system=/Android/i.test(agent)||/Android/i.test(platform)?'android':/Win/i.test(platform)||/Windows/i.test(agent)?'windows':'choose';
+let ticket=null;
+if(pairing){
+try{
+if(!/^djcis:\/\/pair\?d=[A-Za-z0-9_-]{50,3000}$/.test(pairing))throw new Error();
+const encoded=new URL(pairing).searchParams.get('d').replace(/-/g,'+').replace(/_/g,'/');
+const bytes=Uint8Array.from(atob(encoded+'='.repeat((4-encoded.length%4)%4)),c=>c.charCodeAt(0));
+ticket=JSON.parse(new TextDecoder('utf-8',{fatal:true}).decode(bytes));
+if(ticket.version!==1||!/^[A-Za-z0-9_-]{16,80}$/.test(ticket.invitationId)||!/^[A-Za-z0-9_-]{43}$/.test(ticket.token)||!/^[a-fA-F0-9]{64}$/.test(ticket.schoolFingerprint)||!Number.isFinite(Date.parse(ticket.expires)))throw new Error();
+invitation=ticket.invitationId;
+document.getElementById('heading').textContent='Connect your scanner';
+document.getElementById('instructions').textContent='Fresh installation? Install the package for this device, then return here and tap Open ID Agent and connect. If already installed, connect now.';
+download.className='secondary';enroll.href=pairing;
+const checkExpiry=()=>{const expired=Date.parse(ticket.expires)<=Date.now();enroll.hidden=expired;status.textContent=expired?'This pairing QR expired. After installing, scan a new QR from Windows.':'After installation, tap Open ID Agent and connect. Keep the administrator pairing QR open until setup finishes.';return expired;};
+if(!checkExpiry()){const timer=setInterval(()=>{if(checkExpiry())clearInterval(timer);},1000);}
+}catch{ticket=null;status.textContent='This pairing link is invalid. Install the app, then scan a new pairing QR from Windows.';}
+}else{
+status.textContent='After installation, open ID Agent and scan the pairing QR shown in Windows.';
+if(/^[A-Za-z0-9_-]{16,80}$/.test(invitation)){enroll.href='djcis://enroll?inv='+encodeURIComponent(invitation);enroll.textContent='Open ID Agent';enroll.hidden=false;}
+}
+function safeDownload(value,path){
+if(!value)return null;
+const url=new URL(value,location.href),local=location.protocol==='http:'&&url.origin===location.origin&&url.pathname===path;
+if(url.username||url.password||!(url.protocol==='https:'||local))throw new Error();
+return url.href;
+}
+try{
+const suffix=/^[A-Za-z0-9_-]{16,80}$/.test(invitation)?'?inv='+encodeURIComponent(invitation):'';
+const response=await fetch('config.json'+suffix,{cache:'no-store',referrerPolicy:'no-referrer'});if(!response.ok)throw new Error();
+const config=await response.json(),apk=safeDownload(config.apkUrl,'/app.apk'),exe=safeDownload(config.windowsScannerUrl,'/scanner.exe');
+const chosen=system==='windows'?exe:apk,alternate=system==='windows'?apk:exe;
+if(chosen){download.href=chosen;download.textContent=system==='windows'?'Download Windows scanner EXE':'Download Android APK';download.hidden=false;}
+if(alternate){other.href=alternate;other.textContent=system==='windows'?'Download Android APK':'Download Windows scanner EXE';other.hidden=false;}
+downloadStatus.textContent=chosen?(system==='windows'?'Windows scanner · version '+config.windowsScannerVersion:system==='android'?'Android scanner · version '+config.version:'Choose the Android APK or Windows scanner EXE for your device.'):'Windows scanner download unavailable. Ask the administrator for the latest installer.';
+}catch{downloadStatus.textContent='Download unavailable. Ask the administrator to show the school Wi-Fi download QR, or try this page again.';}
 })();
 </script>
 </body>
