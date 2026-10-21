@@ -2,10 +2,10 @@
   "windowsScannerSha256": "09c067c897f5d47293ab1505ea776f1c16ec11b228e645b033c850cd025bf8a3",
   "windowsScannerUrl": "https://github.com/gragaza-creator/ID-Agent-downloads/releases/download/windows-scanner-v0.2.8-build-20261001.1/ID-Agent-Windows-Scanner-0.2.8-Build-20261001.1-Setup.exe",
   "windowsScannerBuild": "20261001.1",
-  "version": "0.2.8",
-  "androidBuild": "20261001.1",
-  "apkUrl": "https://github.com/gragaza-creator/ID-Agent-downloads/releases/download/v0.2.8/DJCIS-Scanner.apk",
-  "androidVersionCode": 10,
+  "version": "0.2.9",
+  "androidBuild": "20261021.1",
+  "apkUrl": "https://github.com/gragaza-creator/ID-Agent-downloads/releases/download/v0.2.9/DJCIS-Scanner.apk",
+  "androidVersionCode": 11,
   "windowsScannerVersion": "0.2.8",
-  "sha256": "978fbc6f38323494688e6271c108cf57f623fa87090869c2e2e73a888add6824"
+  "sha256": "146c699b5cd5c8ee1e64b0b092e3a4c656caa12a12e5ee5a7f6a9f0f43ccc819"
 }
