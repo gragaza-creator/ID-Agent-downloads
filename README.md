@@ -1,9 +1,7 @@
 # ID Agent downloads
 
-Official downloads: https://gragaza-creator.github.io/ID-Agent-downloads/
+Official Android and Windows scanner installers: https://gragaza-creator.github.io/ID-Agent-downloads/
 
-Android 0.2.9 works offline after pairing, without roster expiry or automatic update checks. Delete pairing and scan a fresh laptop pairing QR to replace the saved roster. Printed school QR IDs are unchanged.
+The page detects the operating system and offers a manual alternative. The Windows EXE selects native x64 or ARM64 itself and embeds its runtime. Both scanners can check app updates from Tools & updates. Install over the existing app to retain pairing.
 
-This Android release uses a new signing key. Uninstall the original v0.2.8 app once, install 0.2.9, then pair again. Keep the laptop administrator open during pairing. Physical phone camera testing remains pending.
-
-The existing Windows scanner download is unchanged. This public repository contains only installers, the download page, public metadata and notices. No learner records, school backups, private signing keys or private application source are included.
+This repository contains only the download page, original app mark, metadata, installer assets and notices. Learner records, LRN, birth dates, device/school keys and application source are excluded. Source stays in the private ID-Agent repository. Physical DCP camera and ARM64 hardware testing remains pending.
