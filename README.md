@@ -1,7 +1,7 @@
 # ID Agent downloads
 
-Official Android and Windows scanner installers: https://gragaza-creator.github.io/ID-Agent-downloads/
+Official download and QR landing page: https://gragaza-creator.github.io/ID-Agent-downloads/
 
-The page detects the operating system and offers a manual alternative. The Windows EXE selects native x64 or ARM64 itself and embeds its runtime. Both scanners can check app updates from Tools & updates. Install over the existing app to retain pairing.
+Android 1.0.4 (code 15) is the AO.2-branded scanner, build 20261024.2. Install over recent versions without uninstalling to retain pairing. Tools contains Test printed page, Reset pairing and Paste pairing link. Reset pairing removes this phone's saved IDs; Windows learner records and printed cards are retained. Pair again to receive current roster changes.
 
-This repository contains only the download page, original app mark, metadata, installer assets and notices. Learner records, LRN, birth dates, device/school keys and application source are excluded. Source stays in the private ID-Agent repository. Physical DCP camera and ARM64 hardware testing remains pending.
+The Windows scanner download remains unchanged. This repository contains only public download assets and notices; no school records or private application source are published.
